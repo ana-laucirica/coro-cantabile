@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coro Cantabile · Coro mixto</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0f6;--surface:#fff;--ink:#1c2541;--muted:#5a6280;--line:#cfd4e4;--accent:#8c2f52;--accent-ink:#fff;--hero:#1c2541;--hero-ink:#eef0f6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141829;--surface:#1d2238;--ink:#e8eaf4;--muted:#a1a8c4;--line:#323958;--accent:#e08aa9;--accent-ink:#141829;--hero:#0d1020;--hero-ink:#e8eaf4}}
+:root[data-theme="dark"]{--bg:#141829;--surface:#1d2238;--ink:#e8eaf4;--muted:#a1a8c4;--line:#323958;--accent:#e08aa9;--accent-ink:#141829;--hero:#0d1020;--hero-ink:#e8eaf4}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.15;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--hero);color:var(--hero-ink);display:flex;gap:.25rem 1.25rem;flex-wrap:wrap;align-items:center;padding:.6rem 1.25rem}
+nav b{font-family:Fraunces,Georgia,serif;font-size:1.15rem;margin-right:auto}
+nav a{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.85;padding:.25rem 0}
+nav a:hover{opacity:1;text-decoration:underline}
+.hero{background:var(--hero);color:var(--hero-ink);padding:clamp(3rem,9vw,6rem) 1.25rem 0;overflow:hidden}
+.wrap{max-width:60rem;margin:0 auto}
+.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);font-weight:400;font-style:italic;max-width:12ch}
+.hero p{max-width:34rem;font-size:1.15rem;opacity:.85;margin:1.25rem 0 2rem}
+.staff{display:block;width:100%;height:auto;margin-top:2rem}
+.staff line{stroke:var(--hero-ink);stroke-opacity:.35;stroke-width:1.5}
+.staff text{fill:var(--hero-ink);font:italic 400 15px Fraunces,Georgia,serif;opacity:.9}
+.staff ellipse{fill:var(--accent)}
+.staff .stem{stroke:var(--accent);stroke-opacity:1;stroke-width:2}
+main section{padding:4rem 1.25rem}
+main section:nth-of-type(even){background:color-mix(in srgb,var(--surface) 55%,var(--bg))}
+h2{font-size:clamp(1.8rem,5vw,2.6rem);margin-bottom:.4rem}
+.lead{color:var(--muted);max-width:38rem;margin:0 0 2rem}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);padding:.6rem 1.1rem;border-radius:.4rem;font-weight:600;text-decoration:none;border:0;font:inherit;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}
+.voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:2rem}
+.voices h3{font-size:1.3rem;border-bottom:2px solid var(--accent);padding-bottom:.35rem;margin-bottom:.6rem}
+.voices small{color:var(--muted);display:block;margin-bottom:.5rem}
+.voices ul{list-style:none;padding:0;margin:0}.voices li{padding:.15rem 0}
+.dir{background:var(--surface);border-left:4px solid var(--accent);padding:1rem 1.25rem;margin-bottom:2.5rem;max-width:38rem}
+.dir p{margin:.3rem 0 0;color:var(--muted)}
+.events{list-style:none;padding:0;margin:0}
+.events li{display:grid;grid-template-columns:5.5rem 1fr;gap:0 1.5rem;padding:1.25rem 0;border-top:1px solid var(--line)}
+.events li:last-child{border-bottom:1px solid var(--line)}
+.date{font-family:Fraunces,Georgia,serif;text-align:center;line-height:1}
+.date b{display:block;font-size:2.4rem;font-weight:600;color:var(--accent)}
+.date span{font-size:.95rem;color:var(--muted)}
+.events h3{font-size:1.3rem}
+.events p{margin:.2rem 0;color:var(--muted)}
+.past .date b{color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.filters button{font:inherit;font-weight:500;padding:.4rem .9rem;border-radius:2rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.scores{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:34rem}
+th,td{text-align:left;padding:.75rem .5rem;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted);font-size:.9rem}
+td:first-child{font-family:Fraunces,Georgia,serif;font-size:1.1rem}
+footer{background:var(--hero);color:var(--hero-ink);padding:2.5rem 1.25rem;font-size:.95rem}
+footer a{color:inherit}
+@media (max-width:30rem){.events li{grid-template-columns:4rem 1fr;gap:0 1rem}}
+</style>
+</head>
+<body>
+<nav aria-label="Principal">
+<b>Coro Cantabile</b>
+<a href="#componentes">Componentes</a><a href="#proximos">Próximos conciertos</a><a href="#realizados">Conciertos realizados</a><a href="#partituras">Partituras</a>
+</nav>
+
+<header class="hero">
+<div class="wrap">
+<h1>Cuatro voces, un mismo aire</h1>
+<p>Somos un coro mixto de aficionados que ensaya cada martes. Cantamos música sacra, popular y contemporánea. Si te gusta cantar, ven a probar un ensayo.</p>
+<a class="btn" href="#proximos">Ver próximos conciertos</a>
+<svg class="staff" viewBox="0 0 800 130" role="img" aria-label="Pentagrama con cuatro notas, una por cada voz">
+<g><line x1="0" y1="35" x2="800" y2="35"/><line x1="0" y1="50" x2="800" y2="50"/><line x1="0" y1="65" x2="800" y2="65"/><line x1="0" y1="80" x2="800" y2="80"/><line x1="0" y1="95" x2="800" y2="95"/></g>
+<g><ellipse cx="160" cy="42.5" rx="10" ry="7" transform="rotate(-20 160 42.5)"/><line class="stem" x1="169" y1="44" x2="169" y2="5"/><text x="140" y="122">Sopranos</text></g>
+<g><ellipse cx="320" cy="72.5" rx="10" ry="7" transform="rotate(-20 320 72.5)"/><line class="stem" x1="329" y1="74" x2="329" y2="35"/><text x="306" y="122">Altos</text></g>
+<g><ellipse cx="480" cy="87.5" rx="10" ry="7" transform="rotate(-20 480 87.5)"/><line class="stem" x1="471" y1="89" x2="471" y2="125"/><text x="450" y="122" opacity="0"> </text></g>
+<g><ellipse cx="640" cy="102.5" rx="10" ry="7" transform="rotate(-20 640 102.5)"/><line class="stem" x1="631" y1="104" x2="631" y2="128"/></g>
+<text x="445" y="20">Tenores</text><text x="612" y="20">Bajos</text>
+</svg>
+</div>
+</header>
+
+<main>
+<section id="componentes"><div class="wrap">
+<h2>Componentes</h2>
+<p class="lead">Treinta y dos personas, de todas las edades. Estos son los nombres de cada cuerda.</p>
+<div class="dir"><h3>Dirección: Marta Ibáñez</h3><p>Directora desde 2015. Titulada en Dirección coral y profesora de canto.</p></div>
+<div class="voices">
+<div><h3>Sopranos</h3><small>Voz aguda femenina</small><ul><li>Ana Beltrán</li><li>Carmen Lasheras</li><li>Elena Gil</li><li>Isabel Ortiz</li><li>Lucía Marco</li><li>Pilar Sanz</li><li>Rosa Navarro</li><li>Sara Pardo</li></ul></div>
+<div><h3>Altos</h3><small>Voz grave femenina</small><ul><li>Blanca Ruiz</li><li>Concha Aznar</li><li>Julia Esteban</li><li>Mª Jesús Lorente</li><li>Natalia Casas</li><li>Teresa Vidal</li><li>Verónica Ara</li><li>Yolanda Serrano</li></ul></div>
+<div><h3>Tenores</h3><small>Voz aguda masculina</small><ul><li>Alberto Cano</li><li>Daniel Peña</li><li>Javier Moliner</li><li>Luis Bernad</li><li>Miguel Ángel Ros</li><li>Pablo Ferrer</li><li>Sergio Laín</li></ul></div>
+<div><h3>Bajos</h3><small>Voz grave masculina</small><ul><li>Andrés Mur</li><li>Carlos Abad</li><li>Fernando Lacasa</li><li>Jorge Tello</li><li>Manuel Escuin</li><li>Ramón Gállego</li><li>Vicente Soro</li></ul></div>
+</div>
+</div></section>
+
+<section id="proximos"><div class="wrap">
+<h2>Próximos conciertos</h2>
+<p class="lead">Entrada libre hasta completar aforo, salvo que se indique otra cosa.</p>
+<ul class="events">
+<li><div class="date"><b>18</b><span>oct 2026</span></div><div><h3>Concierto de otoño: Fauré y Rutter</h3><p>19:30 · Iglesia de San Gil, Zaragoza</p><p>Réquiem de Fauré con órgano y piano a cuatro manos.</p></div></li>
+<li><div class="date"><b>12</b><span>dic 2026</span></div><div><h3>Concierto de Navidad</h3><p>20:00 · Auditorio municipal</p><p>Villancicos de España y América, con público invitado a cantar el final.</p></div></li>
+<li><div class="date"><b>20</b><span>mar 2027</span></div><div><h3>Pasión según San Mateo (corales)</h3><p>19:00 · Catedral de Huesca</p><p>Selección de corales de Bach junto al coro invitado Vox Oscensis.</p></div></li>
+</ul>
+</div></section>
+
+<section id="realizados"><div class="wrap">
+<h2>Conciertos realizados</h2>
+<p class="lead">Un repaso de las últimas temporadas.</p>
+<ul class="events past">
+<li><div class="date"><b>20</b><span>jun 2026</span></div><div><h3>Concierto de fin de curso</h3><p>Sala Mozart, Auditorio de Zaragoza</p><p>Obras de Mozart, Haydn y arreglos de música popular aragonesa.</p></div></li>
+<li><div class="date"><b>13</b><span>dic 2025</span></div><div><h3>Concierto de Navidad</h3><p>Iglesia de San Pablo</p><p>Programa de villancicos y el Gloria de Vivaldi.</p></div></li>
+<li><div class="date"><b>05</b><span>abr 2025</span></div><div><h3>Semana Santa en canto</h3><p>Colegiata de Alquézar</p><p>Motetes de Victoria y Palestrina.</p></div></li>
+<li><div class="date"><b>09</b><span>nov 2024</span></div><div><h3>Encuentro de coros del Ebro</h3><p>Teatro de Calatayud</p><p>Tres corales invitadas y obra conjunta final.</p></div></li>
+</ul>
+</div></section>
+
+<section id="partituras"><div class="wrap">
+<h2>Partituras</h2>
+<p class="lead">Material de la temporada para ensayar en casa. Filtra por cuerda.</p>
+<div class="filters" role="group" aria-label="Filtrar por voz">
+<button aria-pressed="true" data-v="todas">Todas</button><button aria-pressed="false" data-v="Soprano">Sopranos</button><button aria-pressed="false" data-v="Alto">Altos</button><button aria-pressed="false" data-v="Tenor">Tenores</button><button aria-pressed="false" data-v="Bajo">Bajos</button>
+</div>
+<div class="scores"><table>
+<thead><tr><th>Obra</th><th>Compositor</th><th>Voces</th><th>Descarga</th></tr></thead>
+<tbody id="rows"></tbody>
+</table></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<p><b>Coro Cantabile</b> · Ensayos los martes de 20:00 a 22:00 · Centro Cívico, Zaragoza</p>
+<p>Contacto: <a href="mailto:info@corocantabile.example">info@corocantabile.example</a></p>
+</div></footer>
+
+<script>
+var obras=[
+["Requiem: In paradisum","Gabriel Fauré","Soprano, Alto, Tenor, Bajo"],
+["Cantique de Jean Racine","Gabriel Fauré","Soprano, Alto, Tenor, Bajo"],
+["Gloria (selección)","Antonio Vivaldi","Soprano, Alto, Tenor, Bajo"],
+["Ave verum corpus","W. A. Mozart","Soprano, Alto, Tenor, Bajo"],
+["Jesu, meine Freude (coral)","J. S. Bach","Soprano, Alto, Tenor, Bajo"],
+["Hallelujah","Leonard Cohen (arr. coral)","Soprano, Alto, Tenor"],
+["Campanas de Belén","Popular (arr. Ibáñez)","Soprano, Alto, Tenor, Bajo"],
+["Ay, linda amiga","Popular catalana","Alto, Tenor, Bajo"]
+];
+var tb=document.getElementById('rows');
+function pinta(v){
+tb.innerHTML='';
+obras.forEach(function(o){
+if(v!=='todas'&&o[2].indexOf(v)<0)return;
+var tr=document.createElement('tr');
+['0','1','2'].forEach(function(i){var td=document.createElement('td');td.textContent=o[i];tr.appendChild(td)});
+var td=document.createElement('td');var a=document.createElement('a');a.href='#';a.className='btn ghost';a.textContent='Descargar PDF';a.setAttribute('aria-label','Descargar PDF de '+o[0]);td.appendChild(a);tr.appendChild(td);tb.appendChild(tr);
+});
+}
+document.querySelectorAll('.filters button').forEach(function(b){
+b.addEventListener('click',function(){
+document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+b.setAttribute('aria-pressed','true');pinta(b.dataset.v);
+});
+});
+pinta('todas');
+</script>
+</body>
+</html>
